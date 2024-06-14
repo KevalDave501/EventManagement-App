@@ -22,7 +22,12 @@ const user = sequelize.define('user', {
   r_type: {
     type: DataTypes.STRING(20),
     allowNull: false,
-    default: "user"
+    defaultValue: "user"
+  },
+  is_active: {
+    type: DataTypes.ENUM('1', '0'),
+    allowNull: false,
+    defaultValue: '0'
   }
 }, {
   tableName: 'user',

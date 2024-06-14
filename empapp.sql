@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jun 14, 2024 at 06:45 AM
--- Server version: 8.2.0
--- PHP Version: 8.2.13
+-- Generation Time: Jun 14, 2024 at 02:17 PM
+-- Server version: 8.3.0
+-- PHP Version: 8.2.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -75,19 +75,21 @@ CREATE TABLE IF NOT EXISTS `user` (
   `u_email` varchar(100) NOT NULL,
   `u_password` varchar(100) NOT NULL,
   `r_type` varchar(50) DEFAULT NULL,
+  `is_active` enum('1','0') NOT NULL,
   PRIMARY KEY (`u_id`),
   KEY `r_type` (`r_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`u_id`, `u_name`, `u_email`, `u_password`, `r_type`) VALUES
-(1, 'KevalDave', 'kevalsdave@gmail.com', 'Keval@123', 'user'),
-(2, 'Harsh Sevak ', 'harshsevak@gmail.com', 'Harsh@123', 'user'),
-(3, 'admin', 'admin@admin.com', 'Admin@123', 'admin'),
-(4, 'yash', 'yash@gmail.com', 'Yash@123', 'user');
+INSERT INTO `user` (`u_id`, `u_name`, `u_email`, `u_password`, `r_type`, `is_active`) VALUES
+(1, 'KevalDave', 'kevalsdave@gmail.com', 'Keval@123', 'user', '1'),
+(2, 'Harsh Sevak ', 'harshsevak@gmail.com', 'Harsh@123', 'user', '0'),
+(3, 'admin', 'admin@admin.com', 'Admin@123', 'admin', '1'),
+(4, 'yash', 'yash@gmail.com', 'Yash@123', 'user', '0'),
+(5, 'Ravi', 'ravi@gmail.com', 'Ravi@123', 'user', '0');
 
 --
 -- Constraints for dumped tables

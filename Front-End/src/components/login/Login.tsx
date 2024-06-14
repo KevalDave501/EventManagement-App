@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Login.css';
-// import UserDashBoard from '../dashboard/UserDashBoard';
+
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -11,11 +11,16 @@ const Login: React.FC = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/api/user/login', {
+      let loginApiUrl = 'http://localhost:8000/api/user/login';
+      if (username.endsWith('@admin.com')) {
+        loginApiUrl = 'http://localhost:8000/api/admin/loginAdmin'
+      }
+
+      const response = await axios.post(loginApiUrl, {
         u_email: username,
         u_password: password
       });
-  
+
       const token = response.data.token;
       localStorage.setItem('token', token);
       redirectToDashboard();
@@ -23,10 +28,15 @@ const Login: React.FC = () => {
       setError('Invalid username or password');
     }
   };
-  
+
   const redirectToDashboard = () => {
-    window.location.href = '/dashboard';
+    if (username.endsWith('@admin.com')) {
+      window.location.href = '/adminDashboard';
+    } else {
+      window.location.href = '/userDashboard';
+    }
   };
+
 
   const handleCreateAccount = () => {
     window.location.href = '/signup';

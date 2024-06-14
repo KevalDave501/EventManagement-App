@@ -1,7 +1,11 @@
-import React from "react";
+import React from 'react';
 
-const UserDashBoard = () => {
-    <h2>Hello User</h2>
+const UserDashboard: React.FC = () => {
+    return (
+        <div>
+            <h1>Welcome to User Dashboard</h1>
+        </div>
+    );
 }
 
-export default UserDashBoard;
+export default UserDashboard;

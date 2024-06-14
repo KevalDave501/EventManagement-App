@@ -1,5 +1,6 @@
 const { createUserServices, loginUserServices } = require('../services/userServices');
 const { createUserSchema, loginUserSchema } = require('../middleware/usersMiddleware');
+const { updateUserIsActiveServices } = require('../services/adminServices');
 
 const createUser = async (req, res) => {
     try {
@@ -22,8 +23,6 @@ const login = async (req, res) => {
         if (error) {
             return res.status(400).json({ error: error.details[0].message });
         }
-
-        // If validation succeeds, proceed with login
         const { u_email, u_password } = req.body;
         const log_in = await loginUserServices(u_email, u_password);
         res.status(200).json(log_in);
@@ -32,7 +31,6 @@ const login = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
-
 
 module.exports = {
     createUser,

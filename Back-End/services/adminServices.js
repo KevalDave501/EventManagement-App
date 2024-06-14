@@ -1,8 +1,10 @@
 const { assert } = require('joi');
 const admin = require('../models/adminModel');
 const jwt = require('jsonwebtoken');
+const user = require('../models/userModel');
+const { where } = require('sequelize');
 
-const createAdminServices = async ( u_name, u_email, u_password ) => {
+const createAdminServices = async (u_name, u_email, u_password) => {
   try {
     return await admin.create({ u_name, u_email, u_password, r_type: "admin" });
   } catch (error) {
@@ -12,7 +14,7 @@ const createAdminServices = async ( u_name, u_email, u_password ) => {
 
 const loginAdminServices = async (u_email, u_password) => {
   try {
-    const user2 = await admin.findOne({ where: { u_email, u_password , r_type: "admin"} });
+    const user2 = await admin.findOne({ where: { u_email, u_password, r_type: "admin" } });
 
     if (!user2) {
       console.log('Authentication failed. User not found.');
@@ -29,8 +31,17 @@ const loginAdminServices = async (u_email, u_password) => {
 
 const getAllUserServices = async () => {
 
-  try{
-    return await admin.findAll({where: { r_type: "user" } });
+  try {
+    return await admin.findAll({ where: { r_type: "user" } });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const updateUserIsActiveServices = async (u_id, is_active) => {
+  try {
+    const newValue = is_active === '1' ? '1' : '0';
+    return await user.update({ is_active: newValue }, { where: { u_id: u_id } });
   } catch (error) {
     console.log(error);
   }
@@ -38,14 +49,15 @@ const getAllUserServices = async () => {
 
 const createEvents = async () => {
   try {
-    return await admin.cretae({  })
+    return await admin.cretae({})
   } catch (error) {
     console.log(error)
 
   }
 }
 module.exports = {
-    createAdminServices,
-    loginAdminServices,
-    getAllUserServices
+  createAdminServices,
+  loginAdminServices,
+  getAllUserServices,
+  updateUserIsActiveServices
 }
