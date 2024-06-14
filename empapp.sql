@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jun 13, 2024 at 02:13 PM
+-- Generation Time: Jun 14, 2024 at 06:45 AM
 -- Server version: 8.2.0
 -- PHP Version: 8.2.13
 
@@ -20,6 +20,25 @@ SET time_zone = "+00:00";
 --
 -- Database: `empapp`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `event`
+--
+
+DROP TABLE IF EXISTS `event`;
+CREATE TABLE IF NOT EXISTS `event` (
+  `e_id` int NOT NULL AUTO_INCREMENT,
+  `e_name` varchar(40) NOT NULL,
+  `e_venue` varchar(150) NOT NULL,
+  `e_startdate` date NOT NULL,
+  `e_enddate` date NOT NULL,
+  `u_id` int NOT NULL,
+  `e_capacity` int NOT NULL,
+  PRIMARY KEY (`e_id`),
+  KEY `u_id` (`u_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -58,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `r_type` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`u_id`),
   KEY `r_type` (`r_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `user`
@@ -67,11 +86,18 @@ CREATE TABLE IF NOT EXISTS `user` (
 INSERT INTO `user` (`u_id`, `u_name`, `u_email`, `u_password`, `r_type`) VALUES
 (1, 'KevalDave', 'kevalsdave@gmail.com', 'Keval@123', 'user'),
 (2, 'Harsh Sevak ', 'harshsevak@gmail.com', 'Harsh@123', 'user'),
-(3, 'admin', 'admin@admin.com', 'Admin@123', 'admin');
+(3, 'admin', 'admin@admin.com', 'Admin@123', 'admin'),
+(4, 'yash', 'yash@gmail.com', 'Yash@123', 'user');
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `event`
+--
+ALTER TABLE `event`
+  ADD CONSTRAINT `event_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`);
 
 --
 -- Constraints for table `user`

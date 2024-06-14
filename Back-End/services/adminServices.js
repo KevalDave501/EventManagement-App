@@ -35,6 +35,15 @@ const getAllUserServices = async () => {
     console.log(error);
   }
 }
+
+const createEvents = async () => {
+  try {
+    return await admin.cretae({  })
+  } catch (error) {
+    console.log(error)
+
+  }
+}
 module.exports = {
     createAdminServices,
     loginAdminServices,
