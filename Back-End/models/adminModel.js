@@ -23,6 +23,11 @@ const admin = sequelize.define('user', {
     type: DataTypes.STRING(20),
     allowNull: false,
     default: "admin"
+  },
+  is_active: {
+    type: DataTypes.BOOLEAN(),
+    allowNull: false,
+    default: '0'
   }
 }, {
   tableName: 'user',

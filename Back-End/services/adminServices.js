@@ -40,12 +40,12 @@ const getAllUserServices = async () => {
 
 const updateUserIsActiveServices = async (u_id, is_active) => {
   try {
-    const newValue = is_active === '1' ? '1' : '0';
-    return await user.update({ is_active: newValue }, { where: { u_id: u_id } });
+      const newValue = is_active === '1' ? '1' : '0';
+      return await user.update({ is_active: newValue }, { where: { u_id: u_id } });
   } catch (error) {
-    console.log(error);
+      console.log(error);
   }
-}
+};
 
 const createEvents = async () => {
   try {

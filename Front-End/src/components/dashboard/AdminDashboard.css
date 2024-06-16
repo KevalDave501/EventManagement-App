@@ -1,0 +1,31 @@
+.admin-dashboard {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.custom-header {
+    background-color: #0d6efd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-custom {
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-custom:hover {
+    background-color: #0b5ed7;
+    color: white;
+}
+
+.text-center {
+    font-weight: bold;
+    color: #212529;
+}
+
+.mt-4 {
+    margin-top: 1.5rem;
+}

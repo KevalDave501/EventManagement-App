@@ -3,7 +3,6 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Login.css';
 
-
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -11,39 +10,33 @@ const Login: React.FC = () => {
 
   const handleLogin = async () => {
     try {
-      let loginApiUrl = 'http://localhost:8000/api/user/login';
-      if (username.endsWith('@admin.com')) {
-        loginApiUrl = 'http://localhost:8000/api/admin/loginAdmin'
-      }
-
-      const response = await axios.post(loginApiUrl, {
+      const response = await axios.post('http://localhost:8000/api/user/login', {
         u_email: username,
         u_password: password
       });
 
-      const token = response.data.token;
-      localStorage.setItem('token', token);
-      redirectToDashboard();
+      const { token, user } = response.data;
+
+      if (user.r_type === 'admin') {
+        localStorage.setItem('token', token);
+        window.location.href = '/adminDashboard';
+      } else if (user.r_type === 'user') {
+        localStorage.setItem('token', token);
+        window.location.href = '/userDashboard';
+      } else {
+        throw new Error('Invalid user role.');
+      }
     } catch (err) {
       setError('Invalid username or password');
     }
   };
-
-  const redirectToDashboard = () => {
-    if (username.endsWith('@admin.com')) {
-      window.location.href = '/adminDashboard';
-    } else {
-      window.location.href = '/userDashboard';
-    }
-  };
-
 
   const handleCreateAccount = () => {
     window.location.href = '/signup';
   };
 
   const handleForgotPassword = () => {
-    // forgotpassword function chhe aa
+    window.location.href = '/forgotPassword';
   };
 
   return (
@@ -79,7 +72,7 @@ const Login: React.FC = () => {
                   <button onClick={handleLogin} className="btn btn-primary">Login</button>
                 </div>
                 <div className="text-center mt-3 d-flex justify-content-between">
-                  <span className="forgot-password-link red-link" onClick={handleForgotPassword}>Forgot Password ?</span>
+                  <span className="forgot-password-link red-link" onClick={handleForgotPassword}>Forgot Password?</span>
                   <span className="create-account-link" onClick={handleCreateAccount}>Create New Account</span>
                 </div>
               </div>
