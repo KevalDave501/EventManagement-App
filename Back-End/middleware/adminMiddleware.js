@@ -14,7 +14,7 @@ const loginAdminSchema = Joi.object({
 
 const createEventSchema = Joi.object({
     e_name: Joi.string().required(),
-    e_venue: Joi.string().required(),
+    e_vanue: Joi.string().required(),
     e_startdate: Joi.date().iso().required(),
     e_enddate: Joi.date().iso().required(),
     e_capacity: Joi.number().required()

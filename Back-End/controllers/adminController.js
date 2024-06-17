@@ -1,5 +1,5 @@
 const { createAdminSchema, loginAdminSchema, createEventSchema } = require('../middleware/adminMiddleware');
-const { createAdminServices, loginAdminServices, getAllUserServices, updateUserIsActiveServices, createEventServices } = require('../services/adminServices');
+const { createAdminServices, loginAdminServices, getAllUserServices, updateUserIsActiveServices, createEventServices, getAllEventServices } = require('../services/adminServices');
 
 const createAdmin = async (req, res) => {
     try {
@@ -58,26 +58,39 @@ const updateUserIsActive = async (req, res) => {
     }
 };
 
+const getAllEvents = async (req, res) => {
+    try {
+        const getUser = await getAllEventServices();
+        res.status(200).json(getUser);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
 
 const createEvent = async (req, res) => {
-    try{
+    try {
         const { error } = createEventSchema.validate(req.body);
         if (error) {
             return res.status(400).json({ error: error.details[0].message });
         }
 
-        const { e_name, e_venue, e_startdate, e_enddate, u_id, e_capacity } = req.body;
-        const event = await createEventServices(e_name, e_venue, e_startdate, e_enddate, u_id, e_capacity);
+        const { e_name, e_vanue, e_startdate, e_enddate, e_capacity } = req.body;
+        const event = await createEventServices(e_name, e_vanue, e_startdate, e_enddate, e_capacity);
+
         res.status(200).json(event);
-    }catch (error) {
-        console.log(error);
+    } catch (error) {
+        console.error('Error creating event:', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
-}
+};
 
 module.exports = {
     createAdmin,
     loginAdmin,
     getAllUser,
     updateUserIsActive,
-    createEvent
+    createEvent,
+    getAllEvents
 };

@@ -1,0 +1,22 @@
+.event-calendar-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .calendar-container {
+    margin-bottom: 20px;
+  }
+  
+  .selected-date-container {
+    margin-bottom: 20px;
+  }
+  
+  .datetime-picker {
+    margin-top: 10px;
+  }
+  
+  .btn-primary {
+    margin-top: 10px;
+  }
+  

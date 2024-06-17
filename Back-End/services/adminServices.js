@@ -39,6 +39,15 @@ const getAllUserServices = async () => {
   }
 }
 
+const getAllEventServices = async () => {
+
+  try {
+    return await event.findAll();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 const updateUserIsActiveServices = async (u_id, is_active) => {
   try {
       const newValue = is_active === '1' ? '1' : '0';
@@ -48,18 +57,28 @@ const updateUserIsActiveServices = async (u_id, is_active) => {
   }
 };
 
-const createEventServices = async (e_name, e_venue, e_startdate, e_enddate, u_id, e_capacity) => {
+const createEventServices = async (e_name, e_vanue, e_startdate, e_enddate, e_capacity) => {
   try {
-    return await event.create({ e_name, e_venue, e_startdate, e_enddate, u_id, e_capacity  });
+      const createdEvent = await event.create({
+          e_name,
+          e_vanue,
+          e_startdate,
+          e_enddate,
+          e_capacity,
+          u_id: 1,
+      });
+
+      return createdEvent;
   } catch (error) {
-    console.log(error)
+      console.error('Error in createEventServices:', error);
   }
-}
+};
 
 module.exports = {
   createAdminServices,
   loginAdminServices,
   getAllUserServices,
   updateUserIsActiveServices,
-  createEventServices
+  createEventServices,
+  getAllEventServices
 }

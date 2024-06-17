@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jun 16, 2024 at 09:58 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- Host: 127.0.0.1:3306
+-- Generation Time: Jun 17, 2024 at 02:36 PM
+-- Server version: 8.0.31
+-- PHP Version: 8.1.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,15 +27,27 @@ SET time_zone = "+00:00";
 -- Table structure for table `event`
 --
 
-CREATE TABLE `event` (
-  `e_id` int(11) NOT NULL,
-  `e_name` varchar(40) NOT NULL,
-  `e_venue` varchar(150) NOT NULL,
-  `e_startdate` date NOT NULL,
-  `e_enddate` date NOT NULL,
-  `u_id` int(11) NOT NULL,
-  `e_capacity` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+DROP TABLE IF EXISTS `event`;
+CREATE TABLE IF NOT EXISTS `event` (
+  `e_id` int NOT NULL AUTO_INCREMENT,
+  `e_name` varchar(40) COLLATE utf8mb4_general_ci NOT NULL,
+  `e_vanue` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `e_startdate` datetime NOT NULL,
+  `e_enddate` datetime NOT NULL,
+  `u_id` int NOT NULL,
+  `e_capacity` int NOT NULL,
+  PRIMARY KEY (`e_id`),
+  KEY `u_id` (`u_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `event`
+--
+
+INSERT INTO `event` (`e_id`, `e_name`, `e_vanue`, `e_startdate`, `e_enddate`, `u_id`, `e_capacity`) VALUES
+(8, 'sdfdsf', 'sdfs', '2024-06-04 18:30:00', '2024-06-05 18:30:00', 1, 20),
+(9, 'Testing Events', 'Ahmedabad', '2024-06-23 19:00:00', '2024-06-24 00:00:00', 1, 50),
+(10, 'Testing', 'Ahmedabad', '2024-06-19 19:00:00', '2024-06-19 20:30:00', 1, 20);
 
 -- --------------------------------------------------------
 
@@ -43,10 +55,13 @@ CREATE TABLE `event` (
 -- Table structure for table `role`
 --
 
-CREATE TABLE `role` (
-  `r_id` int(11) NOT NULL,
-  `r_type` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE IF NOT EXISTS `role` (
+  `r_id` int NOT NULL AUTO_INCREMENT,
+  `r_type` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`r_id`),
+  KEY `r_type` (`r_type`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `role`
@@ -62,14 +77,17 @@ INSERT INTO `role` (`r_id`, `r_type`) VALUES
 -- Table structure for table `user`
 --
 
-CREATE TABLE `user` (
-  `u_id` int(11) NOT NULL,
-  `u_name` varchar(50) NOT NULL,
-  `u_email` varchar(100) NOT NULL,
-  `u_password` varchar(100) NOT NULL,
-  `r_type` varchar(50) DEFAULT NULL,
-  `is_active` enum('1','0') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
+  `u_id` int NOT NULL AUTO_INCREMENT,
+  `u_name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `u_email` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `u_password` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `r_type` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `is_active` enum('1','0') COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`u_id`),
+  KEY `r_type` (`r_type`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user`
@@ -79,54 +97,7 @@ INSERT INTO `user` (`u_id`, `u_name`, `u_email`, `u_password`, `r_type`, `is_act
 (1, 'Keval Dave', 'kevalsdave@gmail.com', 'Keval@123', 'admin', '1'),
 (2, 'Harsh Sevak', 'Harsh@gmail.com', 'Harsh@123', 'user', '0'),
 (3, 'DKeval', 'kevalsdave9898@gmail.com', '$2b$10$vXbt0u2dGBtjnOgchqV3u.Zh4t5kZgwzQZGN.FKcsz7FcKheRbFuG', 'user', '1'),
-(8, 'KN', 'kdave.netclues@gmail.com', '$2b$10$JqXRx1ubvMBt7miexcym1.7DLDJiqdUMgcHrHwnCYLPdPlPM.Ejlq', 'user', '1');
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `event`
---
-ALTER TABLE `event`
-  ADD PRIMARY KEY (`e_id`),
-  ADD KEY `u_id` (`u_id`);
-
---
--- Indexes for table `role`
---
-ALTER TABLE `role`
-  ADD PRIMARY KEY (`r_id`),
-  ADD KEY `r_type` (`r_type`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`u_id`),
-  ADD KEY `r_type` (`r_type`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `event`
---
-ALTER TABLE `event`
-  MODIFY `e_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `role`
---
-ALTER TABLE `role`
-  MODIFY `r_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-  MODIFY `u_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+(8, 'KN', 'kdave.netclues@gmail.com', '$2b$10$Gd.XYA2a9qmBOYg3/DMJ1Oz4dfkIFW/noSsfliCQI3q2v.2jipsQu', 'user', '1');
 
 --
 -- Constraints for dumped tables

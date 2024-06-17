@@ -47,7 +47,6 @@ const forgotPassword = async (req, res) => {
 
     const { u_email } = req.body;
 
-    // Example logic to send password reset email
     const token = await forgotPasswordServices(u_email);
     await sendPasswordResetEmail(u_email, token);
 
@@ -62,21 +61,17 @@ const resetPassword = async (req, res) => {
   try {
     const { token, newPassword } = req.body;
 
-    // Verify and decode the token (ensure to use the same secret as used during token generation)
     const decoded = jwt.verify(token, 'okayokay123');
 
-    // Find the user in the database
     const user1 = await user.findOne({ where: { u_id: decoded.id, u_email: decoded.email } });
 
     if (!user1) {
       throw new Error('Invalid token.');
     }
 
-    // Update the user's password
     const hashedPassword = bcrypt.hashSync(newPassword, 10);
     await user.update({ u_password: hashedPassword }, { where: { u_id: user1.u_id } });
 
-    // Respond with success message
     res.status(200).json({ message: 'Password reset successfully' });
   } catch (error) {
     console.error(error);

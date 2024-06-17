@@ -7,6 +7,7 @@ router.post('/createAdmin', adminController.createAdmin);
 router.post('/loginAdmin', adminController.loginAdmin);
 router.get('/getAllUsers', authenticateToken, adminController.getAllUser);
 router.put('/updateUserIsActive/:id', authenticateToken, adminController.updateUserIsActive);
-router.post('/createEvnet', authenticateToken, adminController.createEvent);
+router.post('/createEvent',authenticateToken, adminController.createEvent);
+router.get('/events', adminController.getAllEvents);
 
 module.exports = router;
