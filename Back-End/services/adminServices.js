@@ -3,6 +3,7 @@ const admin = require('../models/adminModel');
 const jwt = require('jsonwebtoken');
 const user = require('../models/userModel');
 const { where } = require('sequelize');
+const event = require('../models/eventModel');
 
 const createAdminServices = async (u_name, u_email, u_password) => {
   try {
@@ -47,17 +48,18 @@ const updateUserIsActiveServices = async (u_id, is_active) => {
   }
 };
 
-const createEvents = async () => {
+const createEventServices = async (e_name, e_venue, e_startdate, e_enddate, u_id, e_capacity) => {
   try {
-    return await admin.cretae({})
+    return await event.create({ e_name, e_venue, e_startdate, e_enddate, u_id, e_capacity  });
   } catch (error) {
     console.log(error)
-
   }
 }
+
 module.exports = {
   createAdminServices,
   loginAdminServices,
   getAllUserServices,
-  updateUserIsActiveServices
+  updateUserIsActiveServices,
+  createEventServices
 }

@@ -1,5 +1,5 @@
-const { createAdminSchema, loginAdminSchema } = require('../middleware/adminMiddleware');
-const { createAdminServices, loginAdminServices, getAllUserServices, updateUserIsActiveServices } = require('../services/adminServices');
+const { createAdminSchema, loginAdminSchema, createEventSchema } = require('../middleware/adminMiddleware');
+const { createAdminServices, loginAdminServices, getAllUserServices, updateUserIsActiveServices, createEventServices } = require('../services/adminServices');
 
 const createAdmin = async (req, res) => {
     try {
@@ -58,9 +58,26 @@ const updateUserIsActive = async (req, res) => {
     }
 };
 
+
+const createEvent = async (req, res) => {
+    try{
+        const { error } = createEventSchema.validate(req.body);
+        if (error) {
+            return res.status(400).json({ error: error.details[0].message });
+        }
+
+        const { e_name, e_venue, e_startdate, e_enddate, u_id, e_capacity } = req.body;
+        const event = await createEventServices(e_name, e_venue, e_startdate, e_enddate, u_id, e_capacity);
+        res.status(200).json(event);
+    }catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     createAdmin,
     loginAdmin,
     getAllUser,
-    updateUserIsActive
+    updateUserIsActive,
+    createEvent
 };

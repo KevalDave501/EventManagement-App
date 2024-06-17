@@ -11,7 +11,19 @@ const loginAdminSchema = Joi.object({
     u_password: Joi.string().required()
 });
 
+
+const createEventSchema = Joi.object({
+    e_name: Joi.string().required(),
+    e_venue: Joi.string().required(),
+    e_startdate: Joi.date().iso().required(),
+    e_enddate: Joi.date().iso().required(),
+    e_capacity: Joi.number().required()
+
+});
+
+
 module.exports = {
     createAdminSchema,
-    loginAdminSchema
+    loginAdminSchema,
+    createEventSchema
 };
