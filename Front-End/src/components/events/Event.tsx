@@ -9,7 +9,7 @@ import Button from 'react-bootstrap/Button';
 
 const localizer = momentLocalizer(moment);
 
-const Event: React.FC = () => {
+const Event: React.FC = () => {   
   const [events, setEvents] = useState<any[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<any | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -139,7 +139,7 @@ const Event: React.FC = () => {
         events={events}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 500 }}
+        style={{ height: 700 }}
       />
 
       <Modal show={showModal} onHide={handleCloseModal}>
