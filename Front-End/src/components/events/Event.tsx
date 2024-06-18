@@ -1,23 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
-import axios from 'axios'; // Import Axios
-
+import axios from 'axios';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 const localizer = momentLocalizer(moment);
 
 const Event: React.FC = () => {
   const [events, setEvents] = useState<any[]>([]);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<any | null>(null);
+  const [showModal, setShowModal] = useState(false);
   const [eventName, setEventName] = useState<string>('');
   const [eventVenue, setEventVenue] = useState<string>('');
   const [eventCapacity, setEventCapacity] = useState<number | undefined>(undefined);
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
 
   useEffect(() => {
-    fetchEvents(); // Fetch events when component mounts
+    fetchEvents();
   }, []);
 
   const fetchEvents = async () => {
@@ -30,6 +33,8 @@ const Event: React.FC = () => {
           title: event.e_name,
           start: new Date(event.e_startdate),
           end: new Date(event.e_enddate),
+          location: event.e_vanue,
+          capacity: event.e_capacity,
         }));
         setEvents(formattedEvents);
       } else {
@@ -40,72 +45,108 @@ const Event: React.FC = () => {
     }
   };
 
+  const handleSelectEvent = (event: any) => {
+    setSelectedEvent(event);
+    setEventName(event.title);
+    setEventVenue(event.location);
+    setEventCapacity(event.capacity);
+    setStartDate(moment(event.start).format('YYYY-MM-DDTHH:mm'));
+    setEndDate(moment(event.end).format('YYYY-MM-DDTHH:mm'));
+    setShowModal(true);
+  };
+
   const handleSelectSlot = ({ start, end }: { start: Date; end: Date }) => {
-    setStartDate(start);
-    setEndDate(end);
-    setSelectedDate(start);
+    setStartDate(moment(start).format('YYYY-MM-DDTHH:mm'));
+    setEndDate(moment(end).format('YYYY-MM-DDTHH:mm'));
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedEvent(null);
+    setEventName('');
+    setEventVenue('');
+    setEventCapacity(undefined);
+    setStartDate('');
+    setEndDate('');
   };
 
   const handleSubmit = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:8000/api/admin/createEvent', {
-        e_name: eventName,
-        e_vanue: eventVenue,
-        e_startdate: startDate,
-        e_enddate: endDate,
-        e_capacity: eventCapacity,
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      let response;
+      if (selectedEvent) {
+        response = await axios.put(`http://localhost:8000/api/admin/updateEvent/${selectedEvent.id}`, {
+          e_name: eventName,
+          e_vanue: eventVenue,
+          e_startdate: moment(startDate).toISOString(),
+          e_enddate: moment(endDate).toISOString(),
+          e_capacity: eventCapacity,
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      } else {
+        response = await axios.post('http://localhost:8000/api/admin/createEvent', {
+          e_name: eventName,
+          e_vanue: eventVenue,
+          e_startdate: moment(startDate).toISOString(),
+          e_enddate: moment(endDate).toISOString(),
+          e_capacity: eventCapacity,
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
 
       if (response.status === 200) {
         const eventData = response.data;
-        console.log('Event created:', eventData);
-        setEvents([...events, eventData]);
+        console.log('Event action successful:', eventData);
+        if (selectedEvent) {
+          const updatedEvents = events.map(event => event.id === selectedEvent.id ? eventData : event);
+          setEvents(updatedEvents);
+        } else {
+          setEvents([...events, eventData]);
+        }
+        setShowModal(false);
+        setSelectedEvent(null);
         setEventName('');
         setEventVenue('');
         setEventCapacity(undefined);
+        setStartDate('');
+        setEndDate('');
+        fetchEvents();
       } else {
-        console.error('Failed to create event');
+        console.error('Failed to perform event action');
       }
     } catch (error) {
-      console.error('Error creating event:', error);
+      console.error('Error performing event action:', error);
     }
   };
 
-  const handleSelectEvent = (event: any) => {
-    console.log('Selected Event:', event);
-  };
-
-  const eventsOnSelectedDate = events.filter((event) => {
-    const eventDate = moment(event.start).format('YYYY-MM-DD');
-    const selectedDateFormatted = selectedDate ? moment(selectedDate).format('YYYY-MM-DD') : null;
-    return eventDate === selectedDateFormatted;
-  });
-
   return (
     <div className="container mt-4">
-      <h2>Select Date Range:</h2>
+      <h2>Events Calendar</h2>
       <Calendar
         localizer={localizer}
         selectable
-        onSelectSlot={handleSelectSlot}
         onSelectEvent={handleSelectEvent}
+        onSelectSlot={handleSelectSlot}
         events={events}
         startAccessor="start"
         endAccessor="end"
         style={{ height: 500 }}
       />
 
-      {startDate && endDate && (
-        <div className="mt-4">
-          <h3>Selected Start Date: {moment(startDate).format('YYYY-MM-DD HH:mm')}</h3>
-          <h3>Selected End Date: {moment(endDate).format('YYYY-MM-DD HH:mm')}</h3>
-
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>{selectedEvent ? 'Update Event' : 'Create New Event'}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
           <div className="form-group">
             <label htmlFor="eventName">Event Name:</label>
             <input
@@ -139,29 +180,37 @@ const Event: React.FC = () => {
             />
           </div>
 
-          <button className="btn btn-primary" onClick={handleSubmit}>
-            Create Event
-          </button>
-        </div>
-      )}
+          <div className="form-group">
+            <label htmlFor="startDate">Start Date:</label>
+            <input
+              type="datetime-local"
+              id="startDate"
+              className="form-control"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </div>
 
-      {selectedDate && (
-        <div className="mt-4">
-          <h2>Events on Selected Date ({moment(selectedDate).format('YYYY-MM-DD')}):</h2>
-          {eventsOnSelectedDate.length === 0 ? (
-            <p>No events on this date.</p>
-          ) : (
-            <ul className="list-group">
-              {eventsOnSelectedDate.map((event, index) => (
-                <li key={index} className="list-group-item">
-                  <strong>{event.title}</strong> - {moment(event.start).format('HH:mm')} to{' '}
-                  {moment(event.end).format('HH:mm')}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      )}
+          <div className="form-group">
+            <label htmlFor="endDate">End Date:</label>
+            <input
+              type="datetime-local"
+              id="endDate"
+              className="form-control"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleSubmit}>
+            {selectedEvent ? 'Save Changes' : 'Create Event'}
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

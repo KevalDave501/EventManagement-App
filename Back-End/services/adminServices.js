@@ -59,20 +59,31 @@ const updateUserIsActiveServices = async (u_id, is_active) => {
 
 const createEventServices = async (e_name, e_vanue, e_startdate, e_enddate, e_capacity) => {
   try {
-      const createdEvent = await event.create({
-          e_name,
-          e_vanue,
-          e_startdate,
-          e_enddate,
-          e_capacity,
-          u_id: 1,
-      });
-
+      const createdEvent = await event.create({ e_name,e_vanue,e_startdate,e_enddate,e_capacity,u_id: 1,});
       return createdEvent;
   } catch (error) {
       console.error('Error in createEventServices:', error);
   }
 };
+
+const updateEventServices = async (eventId, eventDataToUpdate) => {
+    try {
+        const updatedEvent = await event.findByPk(eventId);
+
+        if (!updatedEvent) {
+            console.log("Event not found");
+        }
+
+        await updatedEvent.update(eventDataToUpdate);
+
+        return updatedEvent.toJSON();
+    } catch (error) {
+        console.error('Error in updateEventServices:', error);
+        throw error;
+    }
+};
+
+
 
 module.exports = {
   createAdminServices,
@@ -80,5 +91,6 @@ module.exports = {
   getAllUserServices,
   updateUserIsActiveServices,
   createEventServices,
-  getAllEventServices
+  getAllEventServices,
+  updateEventServices
 }

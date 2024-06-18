@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jun 17, 2024 at 02:36 PM
--- Server version: 8.0.31
--- PHP Version: 8.1.13
+-- Generation Time: Jun 18, 2024 at 06:34 AM
+-- Server version: 8.2.0
+-- PHP Version: 8.2.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `event`;
 CREATE TABLE IF NOT EXISTS `event` (
   `e_id` int NOT NULL AUTO_INCREMENT,
-  `e_name` varchar(40) COLLATE utf8mb4_general_ci NOT NULL,
+  `e_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `e_vanue` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `e_startdate` datetime NOT NULL,
   `e_enddate` datetime NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `event` (
   `e_capacity` int NOT NULL,
   PRIMARY KEY (`e_id`),
   KEY `u_id` (`u_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `event`
@@ -46,8 +46,11 @@ CREATE TABLE IF NOT EXISTS `event` (
 
 INSERT INTO `event` (`e_id`, `e_name`, `e_vanue`, `e_startdate`, `e_enddate`, `u_id`, `e_capacity`) VALUES
 (8, 'sdfdsf', 'sdfs', '2024-06-04 18:30:00', '2024-06-05 18:30:00', 1, 20),
-(9, 'Testing Events', 'Ahmedabad', '2024-06-23 19:00:00', '2024-06-24 00:00:00', 1, 50),
-(10, 'Testing', 'Ahmedabad', '2024-06-19 19:00:00', '2024-06-19 20:30:00', 1, 20);
+(9, 'Testing Events', 'Ahmedabad', '2024-06-22 19:00:00', '2024-06-24 00:00:00', 1, 14),
+(10, 'Testingggggggggg', 'Gandhinagar', '2024-06-19 14:20:00', '2024-06-19 15:00:00', 1, 25),
+(11, 'sdfdsf', 'Ahmedabad', '2024-06-04 18:30:00', '2024-06-06 18:30:00', 1, 15),
+(12, 'Tesing My All Events', 'Ahmedabad', '2024-06-18 05:22:00', '2024-06-19 05:22:00', 1, 17),
+(13, 'Testing My Events On Same Date', 'Ahmedabad', '2024-06-17 18:30:00', '2024-06-18 18:30:00', 1, 85);
 
 -- --------------------------------------------------------
 
@@ -58,7 +61,7 @@ INSERT INTO `event` (`e_id`, `e_name`, `e_vanue`, `e_startdate`, `e_enddate`, `u
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE IF NOT EXISTS `role` (
   `r_id` int NOT NULL AUTO_INCREMENT,
-  `r_type` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `r_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`r_id`),
   KEY `r_type` (`r_type`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -80,11 +83,11 @@ INSERT INTO `role` (`r_id`, `r_type`) VALUES
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `u_id` int NOT NULL AUTO_INCREMENT,
-  `u_name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `u_email` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `u_password` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `r_type` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `is_active` enum('1','0') COLLATE utf8mb4_general_ci NOT NULL,
+  `u_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `u_email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `u_password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `r_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `is_active` enum('1','0') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`u_id`),
   KEY `r_type` (`r_type`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

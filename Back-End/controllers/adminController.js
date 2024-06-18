@@ -1,5 +1,5 @@
-const { createAdminSchema, loginAdminSchema, createEventSchema } = require('../middleware/adminMiddleware');
-const { createAdminServices, loginAdminServices, getAllUserServices, updateUserIsActiveServices, createEventServices, getAllEventServices } = require('../services/adminServices');
+const { createAdminSchema, loginAdminSchema, createEventSchema, updateEventSchema } = require('../middleware/adminMiddleware');
+const { createAdminServices, loginAdminServices, getAllUserServices, updateUserIsActiveServices, createEventServices, getAllEventServices, updateEventServices } = require('../services/adminServices');
 
 const createAdmin = async (req, res) => {
     try {
@@ -86,11 +86,27 @@ const createEvent = async (req, res) => {
     }
 };
 
+const updateEvent = async (req, res) => {
+    const { eventId } = req.params;
+    const eventDataToUpdate = req.body;
+
+    try {
+        const updatedEvent = await updateEventServices(eventId, eventDataToUpdate);
+        res.status(200).json({ message: 'Event updated successfully', event: updatedEvent });
+    } catch (error) {
+        console.error('Error updating event:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+  
+
+
 module.exports = {
     createAdmin,
     loginAdmin,
     getAllUser,
     updateUserIsActive,
     createEvent,
-    getAllEvents
+    getAllEvents,
+    updateEvent
 };

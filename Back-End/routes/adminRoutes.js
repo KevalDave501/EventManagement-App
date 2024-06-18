@@ -9,5 +9,6 @@ router.get('/getAllUsers', authenticateToken, adminController.getAllUser);
 router.put('/updateUserIsActive/:id', authenticateToken, adminController.updateUserIsActive);
 router.post('/createEvent',authenticateToken, adminController.createEvent);
 router.get('/events', adminController.getAllEvents);
+router.put('/updateEvent/:eventId', authenticateToken, adminController.updateEvent);
 
 module.exports = router;

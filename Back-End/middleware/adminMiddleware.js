@@ -21,9 +21,17 @@ const createEventSchema = Joi.object({
 
 });
 
+const updateEventSchema = Joi.object({
+    e_name: Joi.string().required(),
+    e_vanue: Joi.string().required(),
+    e_startdate: Joi.date().iso().required(),
+    e_enddate: Joi.date().iso().required(),
+    e_capacity: Joi.number().required(),
+  });
 
 module.exports = {
     createAdminSchema,
     loginAdminSchema,
-    createEventSchema
+    createEventSchema,
+    updateEventSchema
 };
