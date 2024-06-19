@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jun 18, 2024 at 03:08 PM
+-- Generation Time: Jun 19, 2024 at 06:39 AM
 -- Server version: 8.2.0
--- PHP Version: 8.1.26
+-- PHP Version: 8.2.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `event` (
   `e_enddate` datetime NOT NULL,
   `u_id` int NOT NULL,
   `e_capacity` int NOT NULL,
+  `is_active` enum('1','0') COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`e_id`),
   KEY `u_id` (`u_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -44,14 +45,14 @@ CREATE TABLE IF NOT EXISTS `event` (
 -- Dumping data for table `event`
 --
 
-INSERT INTO `event` (`e_id`, `e_name`, `e_vanue`, `e_startdate`, `e_enddate`, `u_id`, `e_capacity`) VALUES
-(8, 'sdfdsf', 'sdfs', '2024-06-04 18:30:00', '2024-06-05 18:30:00', 1, 20),
-(9, 'Testing Events', 'Ahmedabad', '2024-06-22 19:00:00', '2024-06-24 00:00:00', 1, 14),
-(10, 'Testingggggggggg', 'Gandhinagar', '2024-06-19 14:20:00', '2024-06-19 15:00:00', 1, 25),
-(11, 'sdfdsf', 'Ahmedabad', '2024-06-04 18:30:00', '2024-06-06 18:30:00', 1, 15),
-(12, 'Tesing My All Events', 'Ahmedabad', '2024-06-18 05:22:00', '2024-06-19 05:22:00', 1, 17),
-(13, 'Testing My Events On Same Date', 'Ahmedabad', '2024-06-17 18:30:00', '2024-06-18 18:30:00', 1, 85),
-(14, 'Testing as per client', 'AHmedabad , Gandhinagar , Rajkot', '2024-06-16 20:30:00', '2024-06-21 22:30:00', 1, 150);
+INSERT INTO `event` (`e_id`, `e_name`, `e_vanue`, `e_startdate`, `e_enddate`, `u_id`, `e_capacity`, `is_active`) VALUES
+(8, 'sdfdsf', 'sdfs', '2024-06-04 18:30:00', '2024-06-05 18:30:00', 1, 20, '1'),
+(9, 'Testing Events', 'Ahmedabad', '2024-06-22 19:00:00', '2024-06-24 00:00:00', 1, 14, '1'),
+(10, 'Testingggggggggg', 'Gandhinagar', '2024-06-19 14:20:00', '2024-06-19 15:00:00', 1, 25, '1'),
+(11, 'sdfdsf', 'Ahmedabad', '2024-06-04 18:30:00', '2024-06-06 18:30:00', 1, 15, '1'),
+(12, 'Tesing My All Events', 'Ahmedabad', '2024-06-18 05:22:00', '2024-06-19 05:22:00', 1, 17, '1'),
+(13, 'Testing My Events On Same Date', 'Ahmedabad', '2024-06-17 18:30:00', '2024-06-18 18:30:00', 1, 85, '1'),
+(14, 'Testing as per client', 'AHmedabad , Gandhinagar , Rajkot', '2024-06-16 20:30:00', '2024-06-21 22:30:00', 1, 150, '1');
 
 -- --------------------------------------------------------
 

@@ -18,6 +18,7 @@ const Event: React.FC = () => {
   const [eventCapacity, setEventCapacity] = useState<number | undefined>(undefined);
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
+  const [isactive, setIsactive] = useState<String>('');
 
   useEffect(() => {
     fetchEvents();
@@ -35,6 +36,7 @@ const Event: React.FC = () => {
           end: new Date(event.e_enddate),
           location: event.e_vanue,
           capacity: event.e_capacity,
+          is_active: event.is_active
         }));
         setEvents(formattedEvents);
       } else {
@@ -52,6 +54,7 @@ const Event: React.FC = () => {
     setEventCapacity(event.capacity);
     setStartDate(moment(event.start).format('YYYY-MM-DDTHH:mm'));
     setEndDate(moment(event.end).format('YYYY-MM-DDTHH:mm'));
+    setIsactive(event.is_active);
     setShowModal(true);
   };
 
@@ -69,6 +72,7 @@ const Event: React.FC = () => {
     setEventCapacity(undefined);
     setStartDate('');
     setEndDate('');
+    setIsactive('');
   };
 
   const handleSubmit = async () => {
@@ -82,6 +86,7 @@ const Event: React.FC = () => {
           e_startdate: moment(startDate).toISOString(),
           e_enddate: moment(endDate).toISOString(),
           e_capacity: eventCapacity,
+          isactive: isactive
         }, {
           headers: {
             'Content-Type': 'application/json',
@@ -95,6 +100,7 @@ const Event: React.FC = () => {
           e_startdate: moment(startDate).toISOString(),
           e_enddate: moment(endDate).toISOString(),
           e_capacity: eventCapacity,
+          isactive: isactive
         }, {
           headers: {
             'Content-Type': 'application/json',

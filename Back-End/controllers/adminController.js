@@ -97,7 +97,7 @@ const updateEvent = async (req, res) => {
         console.error('Error updating event:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
-};
+};  
   
 
 

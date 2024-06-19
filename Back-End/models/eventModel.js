@@ -30,6 +30,11 @@ const event = sequelize.define('event', {
     e_capacity: {
         type: DataTypes.INTEGER,
         allowNull: false
+    },
+    is_active: {
+        type: DataTypes.ENUM('1', '0'),
+        allowNull: false,
+        defaultValue: '1'
     }
 }, {
     tableName: 'event',

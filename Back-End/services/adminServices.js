@@ -42,7 +42,7 @@ const getAllUserServices = async () => {
 const getAllEventServices = async () => {
 
   try {
-    return await event.findAll();
+    return await event.findAll({ where: { is_active: "1" }});
   } catch (error) {
     console.log(error);
   }
