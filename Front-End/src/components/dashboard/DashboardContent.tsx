@@ -1,6 +1,7 @@
 import React from 'react';
 import AllUsers from './AllUsers';
 import Event from '../events/Event';
+import DashboardData from './DashboardData';
 
 interface DashboardContentProps {
     activeTab: string;
@@ -11,9 +12,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ activeTab }) => {
         <div className="dashboard-content">
             {activeTab === 'dashboard' && (
                 <div className="dashboard-section">
-                    <h2>Dashboard Overview</h2>
-                    <p>Welcome back, Admin!</p>
-                    <p>Here you can view important statistics and reports.</p>
+                    < DashboardData />
                 </div>
             )}
             {activeTab === 'allUsers' && (

@@ -18,7 +18,7 @@ const Event: React.FC = () => {
   const [eventCapacity, setEventCapacity] = useState<number | undefined>(undefined);
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
-  const [isactive, setIsactive] = useState<String>('');
+  const [isActive, setIsActive] = useState<boolean>(true);
 
   useEffect(() => {
     fetchEvents();
@@ -36,7 +36,7 @@ const Event: React.FC = () => {
           end: new Date(event.e_enddate),
           location: event.e_vanue,
           capacity: event.e_capacity,
-          is_active: event.is_active
+          is_active: event.is_active === '1'
         }));
         setEvents(formattedEvents);
       } else {
@@ -54,7 +54,7 @@ const Event: React.FC = () => {
     setEventCapacity(event.capacity);
     setStartDate(moment(event.start).format('YYYY-MM-DDTHH:mm'));
     setEndDate(moment(event.end).format('YYYY-MM-DDTHH:mm'));
-    setIsactive(event.is_active);
+    setIsActive(event.is_active);
     setShowModal(true);
   };
 
@@ -72,36 +72,31 @@ const Event: React.FC = () => {
     setEventCapacity(undefined);
     setStartDate('');
     setEndDate('');
-    setIsactive('');
+    setIsActive(true);
   };
 
   const handleSubmit = async () => {
     try {
       const token = localStorage.getItem('token');
       let response;
+      const eventData = {
+        e_name: eventName,
+        e_vanue: eventVenue,
+        e_startdate: moment(startDate).toISOString(),
+        e_enddate: moment(endDate).toISOString(),
+        e_capacity: eventCapacity,
+        is_active: isActive ? '1' : '0',
+      };
+
       if (selectedEvent) {
-        response = await axios.put(`http://localhost:8000/api/admin/updateEvent/${selectedEvent.id}`, {
-          e_name: eventName,
-          e_vanue: eventVenue,
-          e_startdate: moment(startDate).toISOString(),
-          e_enddate: moment(endDate).toISOString(),
-          e_capacity: eventCapacity,
-          isactive: isactive
-        }, {
+        response = await axios.put(`http://localhost:8000/api/admin/updateEvent/${selectedEvent.id}`, eventData, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         });
       } else {
-        response = await axios.post('http://localhost:8000/api/admin/createEvent', {
-          e_name: eventName,
-          e_vanue: eventVenue,
-          e_startdate: moment(startDate).toISOString(),
-          e_enddate: moment(endDate).toISOString(),
-          e_capacity: eventCapacity,
-          isactive: isactive
-        }, {
+        response = await axios.post('http://localhost:8000/api/admin/createEvent', eventData, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
@@ -113,7 +108,9 @@ const Event: React.FC = () => {
         const eventData = response.data;
         console.log('Event action successful:', eventData);
         if (selectedEvent) {
-          const updatedEvents = events.map(event => event.id === selectedEvent.id ? eventData : event);
+          const updatedEvents = events.map((event) =>
+            event.id === selectedEvent.id ? eventData : event
+          );
           setEvents(updatedEvents);
         } else {
           setEvents([...events, eventData]);
@@ -125,6 +122,7 @@ const Event: React.FC = () => {
         setEventCapacity(undefined);
         setStartDate('');
         setEndDate('');
+        setIsActive(true);
         fetchEvents();
       } else {
         console.error('Failed to perform event action');
@@ -206,6 +204,19 @@ const Event: React.FC = () => {
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
             />
+          </div>
+
+          <div className="form-group form-check">
+            <input
+              type="checkbox"
+              id="isActive"
+              className="form-check-input"
+              checked={isActive}
+              onChange={(e) => setIsActive(e.target.checked)}
+            />
+            <label htmlFor="isActive" className="form-check-label">
+              Active
+            </label>
           </div>
         </Modal.Body>
         <Modal.Footer>
